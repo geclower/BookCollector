@@ -20,26 +20,38 @@ GENRES = (
 
 # Create your models here.
 
+class Publisher(models.Model):
+    name = models.CharField(max_length=100)
+    established = models.DateField()
+    website = models.CharField(max_length=100)
+    headquarters = models.CharField(max_length=100)
+    image = models.CharField()
+
+    def __str__(self):
+        return self.name
+
 class Author(models.Model):
     name = models.CharField(max_length=100)
     website = models.CharField(max_length=100)
     number_of_works = models.IntegerField()
     still_active = models.BooleanField('Still Active')
-
+    
     def __str__(self):
         return self.name
     
 class Book(models.Model):
     title = models.CharField(max_length=100)
-    author = models.ForeignKey(Author, on_delete=models.CASCADE)
+    authors = models.ManyToManyField(Author)
     genre = models.CharField(max_length=3,
                              choices=GENRES,
                              default=GENRES[0][0])
     description = models.TextField(max_length=500)
     word_count = models.IntegerField('Word Count')
     publication_date = models.DateField('Publication Date')
+    published_by = models.ForeignKey(Publisher, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.title
     class Meta:
         ordering = ['-publication_date']
+
