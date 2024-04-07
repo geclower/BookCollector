@@ -1,4 +1,6 @@
 from django.db import models
+from datetime import date
+from django.contrib.auth.models import User
 
 GENRES = (
     ('fic', 'Fiction'),
@@ -49,9 +51,10 @@ class Book(models.Model):
     word_count = models.IntegerField('Word Count')
     publication_date = models.DateField('Publication Date')
     published_by = models.ForeignKey(Publisher, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
 
     def __str__(self):
         return self.title
-    class Meta:
-        ordering = ['-publication_date']
+    # class Meta:
+    #     ordering = ['-publication_date']
 
